@@ -14,6 +14,7 @@ class SocketManager {
 		this._io = io;
 		this._boardManager = boardManager;
 		this._avatarManager = avatarManager;
+		this._usersConnected = 0;
 
 		this._sockets = {};
 	}
@@ -35,6 +36,8 @@ class SocketManager {
 		};
 
 		console.log(`Add socket ${socket.id} for board ${board.id}`);
+		this._usersConnected = this._usersConnected + 1
+		console.log(`${this._usersConnected} users connected`);
 
 		socket.join(`board::${board.id}`); // join room for board update notifications
 
@@ -111,6 +114,9 @@ class SocketManager {
 
 	_removeSocket(socket) {
 		delete this._sockets[socket.id];
+		console.log(`Removed socket ${socket.id}`);
+		this._usersConnected = this._usersConnected - 1
+		console.log(`${this._usersConnected} users connected`);
 	}
 
 	init() {
