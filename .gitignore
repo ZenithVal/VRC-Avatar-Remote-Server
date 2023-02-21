@@ -123,6 +123,9 @@ out
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
 
+# Visual Studio Files
+.vs
+
 # yarn v2
 .yarn/cache
 .yarn/unplugged
@@ -133,3 +136,4 @@ out
 config*.yml
 config*.yaml
 icons/
+sounds/

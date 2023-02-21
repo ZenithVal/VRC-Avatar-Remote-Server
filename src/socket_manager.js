@@ -2,6 +2,9 @@ const { Server } = require("socket.io");
 
 const { VrcAvatarManager } = require("./vrc_avatar_manager");
 const { BoardManager } = require("./board_manager");
+const { Config } = require("./config");
+
+const sound = require("sound-play")
 
 class SocketManager {
 	/**
@@ -10,13 +13,17 @@ class SocketManager {
 	 * @param {BoardManager} boardManager
 	 * @param {VrcAvatarManager} avatarManager 
 	 */
-	constructor(io, boardManager, avatarManager) {
+	constructor(io, boardManager, avatarManager, config) {
 		this._io = io;
 		this._boardManager = boardManager;
 		this._avatarManager = avatarManager;
 		this._usersConnected = 0;
 
 		this._sockets = {};
+
+		this.config = config
+		this.connectSound = null; //Sound stuff
+		this.disconnectSound = null;
 	}
 
 	_addSocket(socket) {
@@ -37,6 +44,7 @@ class SocketManager {
 
 		console.log(`Add socket ${socket.id} for board ${board.id}`);
 		this._usersConnected = this._usersConnected + 1
+		if (this.connectSound != null) sound.play(this.connectSound)
 		console.log(`${this._usersConnected} users connected`);
 
 		socket.join(`board::${board.id}`); // join room for board update notifications
@@ -115,6 +123,7 @@ class SocketManager {
 	_removeSocket(socket) {
 		delete this._sockets[socket.id];
 		console.log(`Removed socket ${socket.id}`);
+		if (this.disconnectSound != null) sound.play(this.disconnectSound)
 		this._usersConnected = this._usersConnected - 1
 		console.log(`${this._usersConnected} users connected`);
 	}
@@ -147,6 +156,10 @@ class SocketManager {
 				this._removeSocket(socket);
 			});
 		});
+
+		this.connectSound = this.config.getKey("sounds", "connectPath")
+		this.disconnectSound = this.config.getKey("sounds", "disconnectPath")
+
 	}
 
 	boardUpdate(board_id) {

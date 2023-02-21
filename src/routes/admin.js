@@ -442,7 +442,7 @@ adminRouter.post("/b/:board/a/:avatarId/duplicate-control",
 	requireBoard("board", boardManager, { locked: true }),
 	async function(req, res, next) {
 		try {
-			await req.board.duplicateControl(req.params.avatarId, req.body.controlId);
+			await req.board.duplicateControl(req.params.avatarId, req.body.controlId, req.body.parameter);
 		} catch(err) {
 			err.statusCode = 400;
 			throw err;

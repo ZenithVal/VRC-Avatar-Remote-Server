@@ -26,6 +26,10 @@ const DEFAULT_CONFIG = {
 	icons: {
 		path: "./icons",
 	},
+	sounds: {
+		connectPath: "",
+		disconnectPath: "",
+	},
 	admin: {
 		password: null,
 	},

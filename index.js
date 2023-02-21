@@ -37,7 +37,7 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
-const socketManager = new SocketManager(io, boardManager, avatarManager);
+const socketManager = new SocketManager(io, boardManager, avatarManager, config);
 
 ServiceManager.register("avatarManager", avatarManager);
 ServiceManager.register("boardManager", boardManager);
