@@ -240,7 +240,7 @@ class BoardAvatar {
 	}
 
 	createGroup({ name }) {
-		const groupId = name  + '-' + (uuiv4().substring(0,8)); //Group name + Random ID
+		const groupId = 'group-' + name.replace(/ /g,"_") + '-' + (uuiv4().substring(0,8)); //Group name without spaces + Random ID
 		this._groups[groupId] = new BoardAvatarGroup({
 			name,
 			controls: [],
@@ -361,7 +361,7 @@ class Board extends EventEmitter {
 	_generateNewControlIds() {
 		for (let avid in this._avatars) {
 			for (const control of this._avatars[avid].getControls()) {
-				const newControlId = parameter.name + '-' + (uuiv4().substring(0,8)); // Parameter name + Random ID
+				const newControlId = parameter.name.replace(/ /g,"_") + '-' + (uuiv4().substring(0,8)); // Parameter name + Random ID
 				const updatedControl = new AvatarParamControl({...control.serialize(), id: newControlId });
 				this._avatars[avid].replaceControl(control.id, updatedControl);
 			}
@@ -496,7 +496,7 @@ class Board extends EventEmitter {
 
 		const parameterControl = this.constructControl({
 			avid,
-			id: parameter.name + '-' + (uuiv4().substring(0,8)), // Parameter name + Random ID
+			id: parameter.name.replace(/ /g,"_") + '-' + (uuiv4().substring(0,8)), // Parameter name + Random ID
 			parameterName: parameter.name, 
 			dataType, 
 			controlType, 
@@ -538,7 +538,7 @@ class Board extends EventEmitter {
 
 		const duplicatedControl = new AvatarParamControl({
 			...sourceControl.serialize(),
-			id: parameter.name  + '-' + (uuiv4().substring(0,8)) //Group name + Random ID
+			id: parameter.name.replace(/ /g,"_")  + '-' + (uuiv4().substring(0,8)) //Group name + Random ID
 		});
 
 		const groupId = this._avatars[avid].getGroupForControl(id);
