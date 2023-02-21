@@ -137,3 +137,4 @@ config*.yml
 config*.yaml
 icons/
 sounds/
+**/desktop.ini

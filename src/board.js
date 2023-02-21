@@ -240,7 +240,7 @@ class BoardAvatar {
 	}
 
 	createGroup({ name }) {
-		const groupId = name  + '-' + (uuiv4().substring(0,8)) //Group name + Random ID
+		const groupId = name  + '-' + (uuiv4().substring(0,8)); //Group name + Random ID
 		this._groups[groupId] = new BoardAvatarGroup({
 			name,
 			controls: [],
@@ -361,7 +361,7 @@ class Board extends EventEmitter {
 	_generateNewControlIds() {
 		for (let avid in this._avatars) {
 			for (const control of this._avatars[avid].getControls()) {
-				const newControlId = parameter.name + '-' + (uuiv4().substring(0,8)) // Parameter name + Random ID
+				const newControlId = parameter.name + '-' + (uuiv4().substring(0,8)); // Parameter name + Random ID
 				const updatedControl = new AvatarParamControl({...control.serialize(), id: newControlId });
 				this._avatars[avid].replaceControl(control.id, updatedControl);
 			}
