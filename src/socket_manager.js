@@ -23,9 +23,10 @@ class SocketManager {
 		this.config = config
 		this.connectSound = null; //Sound stuff
 		this.disconnectSound = null;
+		this.socketCounter = true;
 	}
 
-	_addSocket(socket) {
+	_addSocket(socket, socketCounter) {
 		let board;
 		try {
 			board = this._boardManager.getBoard(socket.data.boardId);
@@ -41,11 +42,16 @@ class SocketManager {
 			params: []
 		};
 
-		console.log(`Add socket ${socket.id} for board ${board.id}`);
-		this._usersConnected = this._usersConnected + 1;
-		if (this.connectSound != null) sound.play(this.connectSound);
+		console.log(`Added socket ${socket.id} for board ${board.id}`);
+		
+		if (this.connectSound != null) {
+		sound.play(this.connectSound);
+		}
 
-		console.log(`${this._usersConnected} users connected`);
+		if (socketCounter) {
+			this._usersConnected = this._usersConnected + 1;
+			console.log(`\x1b[32m${this._usersConnected} users connected \x1b[0m`);
+		}
 
 		socket.join(`board::${board.id}`); // join room for board update notifications
 
@@ -120,13 +126,21 @@ class SocketManager {
 		}
 	}
 
-	_removeSocket(socket) {
+	_removeSocket(socket, socketCounter) {
 		delete this._sockets[socket.id];
-		console.log(`Removed socket ${socket.id}`);
-		this._usersConnected = this._usersConnected - 1;
-		if (this.disconnectSound != null) sound.play(this.disconnectSound);
 
-		console.log(`${this._usersConnected} users connected`);
+		if (this.disconnectSound != null) {
+			sound.play(this.disconnectSound);
+		}
+	
+		console.log(`Removed socket ${socket.id}`);
+
+		if (socketCounter) {
+			this._usersConnected = this._usersConnected - 1;
+			console.log(`\x1b[33m${this._usersConnected} users connected \x1b[0m`);
+		}
+
+		
 	}
 
 	init() {
@@ -150,11 +164,13 @@ class SocketManager {
 			}
 		});
 
+		this.socketCounter = this.config.getKey("consoleLogs","socketCounter");
+
 		this._io.on("connection", socket => {
-			this._addSocket(socket);
+			this._addSocket(socket,this.socketCounter);
 
 			socket.on("disconnect", () => {
-				this._removeSocket(socket);
+				this._removeSocket(socket,this.socketCounter);
 			});
 		});
 

@@ -17,6 +17,8 @@ class BoardManager {
 		this._socketManager = null; // has to be registered by the socketmanager to avoid the circular dependency
 
 		this._locks = new Set();
+
+		// this._boardsValidationLog = true;
 	}
 
 	_handleBoardUpdate(board_id) {
@@ -130,8 +132,12 @@ class BoardManager {
 
 	// try to load all boards from the config in order to throw an exception right at the start of the server
 	tryLoadingAllBoards() {
+		this._boardsValidationLog = this._config.getKey("consoleLogs","boardsValidation") === true;
+
 		for (let boardId of this.getAllBoardIds()) {
-			console.log(`Validating board ${boardId}`);
+			if (this._boardsValidationLog == true) {
+				console.log(`Validating board ${boardId}`);
+			}
 			this.getBoard(boardId, { verifyMode: true });
 		}
 	}

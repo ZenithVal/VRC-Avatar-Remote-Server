@@ -23,6 +23,14 @@ const DEFAULT_CONFIG = {
 			port: 9001,
 		}
 	},
+	consoleLogs: {
+		socketCounter: true,
+		boardsValidation: true,
+		avatarsValidation: true,
+		hideAvatarIDs: true,
+		groupsValidation: true,
+		controlsValidation: true
+	},
 	icons: {
 		path: "./icons",
 	},

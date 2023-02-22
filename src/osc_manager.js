@@ -33,7 +33,7 @@ class OscManager extends EventEmitter {
 		console.log(`OSC messages will be sent to ${sendAddress}:${sendPort}`);
 
 		this._osc.on("ready", () => {
-			console.log(`OSC server is listening on ${address}:${port}`);
+			console.log(`OSC server is listening on ${address}:${port}\n`);
 		});
 
 		this._osc.on("message", (msg) => {

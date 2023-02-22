@@ -260,7 +260,7 @@ async function main() {
 
 	await new Promise(resolve => httpServer.listen(port, address, resolve));
 
-	console.log(`Server is listening on ${address}:${port}`);
+	console.log(`\nServer is listening on ${address}:${port}`);
 
 	oscManager.init();
 	avatarManager.init();

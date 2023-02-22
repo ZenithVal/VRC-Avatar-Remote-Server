@@ -136,12 +136,13 @@ class BoardAvatarGroup {
 
 class BoardAvatar {
 	// performs deserialization
-	constructor(definition, verifyMode = false) {
+	constructor(definition, verifyMode = false, _controlsValidationLog, _groupsValidationLog) {
+
 		this._name = definition.name;
 
 		this._controls = {};
 		for (const controlId in definition.controls) {
-			if (verifyMode) {
+			if (verifyMode && _controlsValidationLog) {
 				console.log(`Validating avatar control ${controlId}`);
 			}
 			this._controls[controlId] = new AvatarParamControl({ ...definition.controls[controlId], id: controlId });
@@ -152,6 +153,9 @@ class BoardAvatar {
 		
 		this._controlGroups = {}; // lookup list to find the group for each control faster
 		for (const groupId in this._groups) {
+			if (verifyMode && _groupsValidationLog) {
+				console.log(`Validating group ${groupId}`);
+			}
 			for (const controlId of this._groups[groupId].controls) {
 				this._controlGroups[controlId] = groupId;
 			}
@@ -347,12 +351,24 @@ class Board extends EventEmitter {
 		this._password = boardDef.password;
 		this._name = boardDef.name;
 
+		this._avatarsValidationLog = (this._config.getKey("consoleLogs","avatarsValidation"));
+		this._hideAvatarIDs = (this._config.getKey("consoleLogs","hideAvatarIDs"));
+
+		this._controlsValidationLog = (this._config.getKey("consoleLogs","controlsValidation"));
+		this._groupsValidationLog = (this._config.getKey("consoleLogs","groupsValidation"));
+
 		this._avatars = Object.fromEntries(
-			Object.entries(boardDef.avatars).map(elem => {
-				if (verifyMode) {
-					console.log(`Validating avatar ${elem[0]}`);
+			Object.entries(boardDef.avatars).map(elem =>
+				{
+				if (verifyMode && this._avatarsValidationLog) {
+					if (this._hideAvatarIDs) {
+						console.log(`Validating avatar ${elem[0].substring(5,9)}### | ${elem[1].name}`);
+					}
+					else {
+						console.log(`Validating avatar ${elem[0]} | ${elem[1].name}`);
+					}			
 				}
-				return [elem[0], new BoardAvatar(elem[1], verifyMode)];
+				return [elem[0], new BoardAvatar(elem[1], verifyMode, this._controlsValidationLog, this._groupsValidationLog)];
 			})
 		);
 	}
