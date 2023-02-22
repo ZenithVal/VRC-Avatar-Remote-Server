@@ -37,7 +37,7 @@ class BoardManager {
 	}
 
 	async createBoard() {
-		const id = uuiv4();
+		const id = 'board-' + uuiv4();
 		const board = new Board(id, this._config, this._avatarManager, this._iconManager);
 		await board._store();
 

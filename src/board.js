@@ -512,7 +512,7 @@ class Board extends EventEmitter {
 
 		const parameterControl = this.constructControl({
 			avid,
-			id: parameter.name.replace(/ /g,"_") + '-' + (uuiv4().substring(0,8)), // Parameter name + Random ID
+			id: label.replace(/ /g,"_") + '-' + (uuiv4().substring(0,8)), // Parameter name + Random ID
 			parameterName: parameter.name, 
 			dataType, 
 			controlType, 
@@ -554,7 +554,7 @@ class Board extends EventEmitter {
 
 		const duplicatedControl = new AvatarParamControl({
 			...sourceControl.serialize(),
-			id: parameter.name.replace(/ /g,"_")  + '-' + (uuiv4().substring(0,8)) //Group name + Random ID
+			id: label.replace(/ /g,"_")  + '-' + (uuiv4().substring(0,8)) //Group name + Random ID
 		});
 
 		const groupId = this._avatars[avid].getGroupForControl(id);
