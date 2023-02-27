@@ -146,6 +146,17 @@ async function main() {
 		res.sendFile(path.join(__dirname, "client/dist/index.html"));
 	});
 
+	// this.slashBBoard = config.getKey("slashBBoard"); //Optional discarding of /b/
+	// if (this.slashBBoard) {
+	// 	app.get("/b/:boardId", function(req, res) {
+	// 		res.sendFile(path.join(__dirname, "client/dist/index.html"));
+	// 	});
+	// } else {
+	// 	app.get("/:boardId", function(req, res) {
+	// 		res.sendFile(path.join(__dirname, "client/dist/index.html"));
+	// 	});
+	// }
+
 	app.get("/admin", function(req, res) {
 		res.sendFile(path.join(__dirname, "client/dist/admin.html"));
 	});
@@ -255,6 +266,12 @@ async function main() {
 	});
 
 	app.use("/api/b/:board", boardRouter);
+
+	// if (this.slashBBoard) { //Optional discarding of /b/
+	// 	app.use("/api/b/:board", boardRouter);
+	// } else {
+	// 	app.use("/api/:board", boardRouter);
+	// }
 
 	app.use("/api/admin", adminRouter);
 
