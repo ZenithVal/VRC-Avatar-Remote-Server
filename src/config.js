@@ -35,13 +35,16 @@ const DEFAULT_CONFIG = {
 		path: "./icons",
 	},
 	sounds: {
-		connectPath: "",
-		disconnectPath: "",
+		enabled: false,
+		volume: 0.5,
+		connectPath: "./ConnectSound.wav",
+		disconnectPath: "./DisconnectSound.wav",
 	},
 	admin: {
 		password: null,
 	},
 	defaultBoard: null,
+	// slashBBoard: true,
 	firstTimeSetup: true,
 	boards: {},
 	avatars: {},

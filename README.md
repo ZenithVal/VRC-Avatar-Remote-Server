@@ -150,11 +150,48 @@ You can then follow the interface to create a new board, add avatars and control
 
 **Documentation coming soon**
 
+## Manual Config.yml Settings
+Some options are not currently configurable via the web interface. 
+You can instead change them in your config.yml
+
+
+### Console Logs:
+|value|function|
+|---|---|
+|socketCounter|Prints the number of active sockets to the web interface (number of connections)
+|hideAvatarIDs|Hides most of the avatar ID that get printed to the console
+|(name)Validation|Defines if the section's validation logs should be printed
+
+<!-- ```yml
+consoleLogs:
+  socketCounter: true
+  boardsValidation: false
+  avatarsValidation: true
+  hideAvatarIDs: true
+  groupsValidation: false
+  controlsValidation: false
+``` -->
+
+### Sounds:
+|value|function|
+|---|---|
+|enabled|Is it?
+|volume|volume of sounds (0.0-1.0)
+|(name)Path|Paths to the sound files
+
+<!-- ```yml
+sounds:
+  enabled: true
+  volume: 0.1
+  connectPath: D:/OSC/OSCServer/Sounds/Connect.wav
+  disconnectPath: D:/OSC/OSCServer/Sounds/Disconnect.wav
+``` -->
+
 ## Troubleshooting
 
 **The boards always says 'The currently selected avatar has no controls on this board'**
 
-The server is only informed of avatar changes, so if you restart the server you need to switch _into_ an avatar you have set up before the server displays the respective board.
+There is no way for the server to "ask" VRChat what the current avatar is; VRChat only sends that information upon avatar changes. If you restart the server you need to switch _into_ an avatar you have set up before the server displays the respective board. Resetting your avatar in game will also work.
 
 Also make sure that the server is actually receiving OSC messages from VRChat.
 Is VRChat configured to send OSC packets to the right address that the server is listening on?

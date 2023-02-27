@@ -138,6 +138,10 @@ async function main() {
 		res.sendFile(path.join(__dirname, "client/dist/index.html"));
 	});
 
+	app.get("/admin", function(req, res) {
+		res.sendFile(path.join(__dirname, "client/dist/admin.html"));
+	});
+
 	app.get("/b/:boardId", function(req, res) {
 		res.sendFile(path.join(__dirname, "client/dist/index.html"));
 	});
@@ -251,6 +255,7 @@ async function main() {
 	});
 
 	app.use("/api/b/:board", boardRouter);
+
 	app.use("/api/admin", adminRouter);
 
 	app.use(unlockRequiredBoardOnError(boardManager));
@@ -264,7 +269,11 @@ async function main() {
 
 	oscManager.init();
 	avatarManager.init();
-	socketManager.init();
+
+	setTimeout(function() { //Minor delay so config readouts don't overlap. Maybe config readouts should be done elsewhere.
+		socketManager.init();
+	  }, 50);
+
 	apiKeyAuth.init();
 
 	if ("TEST_TRIGGER" in process.env) {

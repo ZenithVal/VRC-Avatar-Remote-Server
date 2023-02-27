@@ -19,11 +19,16 @@ class SocketManager {
 		this._usersConnected = 0;
 
 		this._sockets = {};
+		this.socketCounter = true;
 
 		this.config = config
-		this.connectSound = null; //Sound stuff
+
+		//Sounds
+		this.soundsEnabled = false
+		this.soundvolume = 0.5;
+		this.connectSound = null; 
 		this.disconnectSound = null;
-		this.socketCounter = true;
+
 	}
 
 	_addSocket(socket, socketCounter) {
@@ -43,9 +48,9 @@ class SocketManager {
 		};
 
 		console.log(`Added socket ${socket.id} for board ${board.id}`);
-		
-		if (this.connectSound != null) {
-		sound.play(this.connectSound);
+
+		if (this.soundsEnabled && this.connectSound != null) {
+			sound.play(this.connectSound,this.soundvolume);
 		}
 
 		if (socketCounter) {
@@ -129,8 +134,8 @@ class SocketManager {
 	_removeSocket(socket, socketCounter) {
 		delete this._sockets[socket.id];
 
-		if (this.disconnectSound != null) {
-			sound.play(this.disconnectSound);
+		if (this.soundsEnabled && this.disconnectSound != null) {
+			sound.play(this.disconnectSound,this.soundvolume);
 		}
 	
 		console.log(`Removed socket ${socket.id}`);
@@ -174,8 +179,25 @@ class SocketManager {
 			});
 		});
 
-		this.connectSound = this.config.getKey("sounds", "connectPath");
-		this.disconnectSound = this.config.getKey("sounds", "disconnectPath");
+		this.soundsEnabled = this.config.getKey("sounds", "enabled")
+		if (this.soundsEnabled) //Check if sounds are enabled
+		{
+			this.soundvolume = parseFloat(this.config.getKey("sounds", "volume"))
+			this.connectSound = this.config.getKey("sounds", "connectPath");
+			this.disconnectSound = this.config.getKey("sounds", "disconnectPath");
+
+			console.log (`Sounds enabled: \n\tVolume set to ${this.soundvolume*100}%`)
+			if (this.connectSound != null) {
+				console.log(`\tConnect Sound: ${this.connectSound}`)
+			}
+
+			if (this.disconnectSound != null) {
+				console.log(`\tDisconnect Sound: ${this.disconnectSound}\n`)
+			}
+
+		} else {
+			console.log (`Sounds disabled\n`)
+		}
 
 	}
 
